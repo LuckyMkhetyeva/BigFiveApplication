@@ -244,3 +244,32 @@ plt.savefig(
 )
 
 plt.show()
+
+
+# --------------------------------------------------
+# Individual Prediction Confidence
+# --------------------------------------------------
+
+print("\nINDIVIDUAL TEST IMAGE PREDICTIONS")
+
+for i in range(len(test_paths)):
+    actual_index = y_true[i]
+    predicted_index = y_pred[i]
+
+    actual_class = CLASS_NAMES[actual_index]
+    predicted_class = CLASS_NAMES[predicted_index]
+
+    confidence = y_probabilities[i][predicted_index] * 100
+
+    image_name = Path(test_paths[i]).name
+
+    result = "CORRECT" if actual_index == predicted_index else "INCORRECT"
+
+    print(
+        f"\nImage: {image_name}"
+        f"\nActual: {actual_class}"
+        f"\nPredicted: {predicted_class}"
+        f"\nConfidence: {confidence:.2f}%"
+        f"\nResult: {result}"
+    )
+
