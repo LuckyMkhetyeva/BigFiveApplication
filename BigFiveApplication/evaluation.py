@@ -361,3 +361,37 @@ plt.savefig(
 )
 
 plt.show()
+
+# --------------------------------------------------
+# Save Evaluation Results
+# --------------------------------------------------
+
+report = classification_report(
+    y_true,
+    y_pred,
+    target_names=CLASS_NAMES,
+    digits=4
+)
+
+with open("evaluation_results.txt", "w") as file:
+    file.write("BIG FIVE SPECIES CLASSIFICATION - EVALUATION RESULTS\n")
+    file.write("=" * 55 + "\n\n")
+
+    file.write(f"Number of test images: {len(y_true)}\n")
+    file.write(f"Accuracy:  {accuracy:.4f}\n")
+    file.write(f"Precision: {precision:.4f}\n")
+    file.write(f"Recall:    {recall:.4f}\n")
+    file.write(f"F1-score:  {f1:.4f}\n\n")
+
+    file.write("CLASSIFICATION REPORT\n")
+    file.write("-" * 55 + "\n")
+    file.write(report)
+
+    file.write("\n\nERROR ANALYSIS\n")
+    file.write("-" * 55 + "\n")
+    file.write(f"Total incorrect predictions: {len(incorrect_indices)}\n")
+
+    if len(incorrect_indices) == 0:
+        file.write("No images were misclassified in the test set.\n")
+
+print("\nEvaluation results saved to: evaluation_results.txt")
