@@ -206,3 +206,41 @@ print(f"Accuracy:  {accuracy:.4f}")
 print(f"Precision: {precision:.4f}")
 print(f"Recall:    {recall:.4f}")
 print(f"F1-score:  {f1:.4f}")
+
+# --------------------------------------------------
+# Per-Class Classification Report
+# --------------------------------------------------
+
+print("\nCLASSIFICATION REPORT")
+print(
+    classification_report(
+        y_true,
+        y_pred,
+        target_names=CLASS_NAMES,
+        digits=4
+    )
+)
+
+# --------------------------------------------------
+# Confusion Matrix
+# --------------------------------------------------
+
+cm = confusion_matrix(y_true, y_pred)
+
+disp = ConfusionMatrixDisplay(
+    confusion_matrix=cm,
+    display_labels=CLASS_NAMES
+)
+
+disp.plot(xticks_rotation=45)
+
+plt.title("Big Five Species Classification - Confusion Matrix")
+plt.tight_layout()
+
+plt.savefig(
+    "evaluation_confusion_matrix.png",
+    dpi=300,
+    bbox_inches="tight"
+)
+
+plt.show()
