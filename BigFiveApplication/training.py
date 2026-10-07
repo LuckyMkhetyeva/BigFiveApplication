@@ -41,7 +41,7 @@ random.seed(SEED)
 np.random.seed(SEED)
 tf.random.set_seed(SEED)
 
-DATA_DIR = Path("data")
+DATA_DIR = Path("Animal")
 IMG_SIZE = (224, 224)
 BATCH_SIZE = 32
 NUM_CLASSES = 5
@@ -50,7 +50,7 @@ CLASS_NAMES = ["Buffalo", "Elephant", "Leopard", "Lion", "Rhino"]
 # ---------------------------------------------------------------------
 # 1. Collect file paths and labels
 # ---------------------------------------------------------------------
-valid_ext = {".jfif", ".jpeg", ".png", ".bmp", ".webp"}
+valid_ext = {".jpg", ".jfif", ".jpeg", ".png", ".bmp", ".webp"}
 paths, labels = [], []
 
 for label, class_name in enumerate(CLASS_NAMES):
