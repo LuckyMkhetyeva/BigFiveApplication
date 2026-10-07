@@ -273,3 +273,91 @@ for i in range(len(test_paths)):
         f"\nResult: {result}"
     )
 
+# --------------------------------------------------
+# Error and Confidence Analysis
+# --------------------------------------------------
+
+incorrect_indices = np.where(y_true != y_pred)[0]
+
+print("\nERROR ANALYSIS")
+print(f"Total incorrect predictions: {len(incorrect_indices)}")
+
+if len(incorrect_indices) > 0:
+    print("\nMisclassified Images:")
+
+    for i in incorrect_indices:
+        actual_class = CLASS_NAMES[y_true[i]]
+        predicted_class = CLASS_NAMES[y_pred[i]]
+        confidence = y_probabilities[i][y_pred[i]] * 100
+        image_name = Path(test_paths[i]).name
+
+        print(
+            f"\nImage: {image_name}"
+            f"\nActual: {actual_class}"
+            f"\nPredicted: {predicted_class}"
+            f"\nConfidence: {confidence:.2f}%"
+        )
+
+else:
+    print("No images were misclassified in the test set.")
+
+    print("\nLowest-Confidence Correct Predictions:")
+
+    confidence_scores = np.max(y_probabilities, axis=1)
+    lowest_confidence_indices = np.argsort(confidence_scores)[:3]
+
+    for i in lowest_confidence_indices:
+        actual_class = CLASS_NAMES[y_true[i]]
+        predicted_class = CLASS_NAMES[y_pred[i]]
+        confidence = confidence_scores[i] * 100
+        image_name = Path(test_paths[i]).name
+
+        print(
+            f"\nImage: {image_name}"
+            f"\nActual: {actual_class}"
+            f"\nPredicted: {predicted_class}"
+            f"\nConfidence: {confidence:.2f}%"
+        )
+
+
+# --------------------------------------------------
+# Visualise Lowest-Confidence Predictions
+# --------------------------------------------------
+
+confidence_scores = np.max(y_probabilities, axis=1)
+lowest_confidence_indices = np.argsort(confidence_scores)[:3]
+
+plt.figure(figsize=(12, 4))
+
+for plot_position, i in enumerate(lowest_confidence_indices):
+    image = tf.io.read_file(test_paths[i])
+    image = tf.image.decode_image(
+        image,
+        channels=3,
+        expand_animations=False
+    )
+
+    actual_class = CLASS_NAMES[y_true[i]]
+    predicted_class = CLASS_NAMES[y_pred[i]]
+    confidence = confidence_scores[i] * 100
+
+    plt.subplot(1, 3, plot_position + 1)
+    plt.imshow(image.numpy())
+    plt.axis("off")
+
+    plt.title(
+        f"Actual: {actual_class}\n"
+        f"Predicted: {predicted_class}\n"
+        f"Confidence: {confidence:.2f}%"
+    )
+
+plt.suptitle("Lowest-Confidence Correct Predictions")
+plt.tight_layout()
+
+plt.savefig(
+    "lowest_confidence_predictions.png",
+    dpi=300,
+    bbox_inches="tight"
+)
+
+plt.show()
