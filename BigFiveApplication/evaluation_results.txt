@@ -1,0 +1,28 @@
+BIG FIVE SPECIES CLASSIFICATION - EVALUATION RESULTS
+=======================================================
+
+Number of test images: 12
+Accuracy:  1.0000
+Precision: 1.0000
+Recall:    1.0000
+F1-score:  1.0000
+
+CLASSIFICATION REPORT
+-------------------------------------------------------
+              precision    recall  f1-score   support
+
+     Buffalo     1.0000    1.0000    1.0000         3
+    Elephant     1.0000    1.0000    1.0000         2
+     Leopard     1.0000    1.0000    1.0000         2
+        Lion     1.0000    1.0000    1.0000         3
+       Rhino     1.0000    1.0000    1.0000         2
+
+    accuracy                         1.0000        12
+   macro avg     1.0000    1.0000    1.0000        12
+weighted avg     1.0000    1.0000    1.0000        12
+
+
+ERROR ANALYSIS
+-------------------------------------------------------
+Total incorrect predictions: 0
+No images were misclassified in the test set.
