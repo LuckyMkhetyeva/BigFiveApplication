@@ -1,6 +1,7 @@
-# predict.py - Big Five animal classifier: prediction module
+# AIE580S-DSE580S Topic 5
+# African Big Five Image Classification using CNN + MobileNetV2 Transfer Learning
 #
-# Loads the trained MobileNetV2 model (big_five_mobilenetv2.keras, produced by
+# This predict.py loads the trained MobileNetV2 model (big_five_mobilenetv2.keras, produced by
 # training.py), preprocesses a user image and returns the predicted species
 # with a confidence score.
 #
