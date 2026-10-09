@@ -1,21 +1,18 @@
-"""
-predict.py - Big Five animal classifier: prediction module 
-
-Loads the trained MobileNetV2 model (big_five_mobilenetv2.keras, produced by
-training.py), preprocesses a
-user image and returns the predicted species with a confidence score.
-
-Usage from the command line:
-    python predict.py path/to/image.jpg
-    python predict.py path/to/image.jpg --model big_five_mobilenetv2.keras
-
-Usage from Python / Colab:
-    from predict import AnimalClassifier
-    clf = AnimalClassifier("big_five_mobilenetv2.keras")
-    result = clf.predict("lion.jpg")
-    print(result["label"], result["confidence"])
-
-"""
+# predict.py - Big Five animal classifier: prediction module
+#
+# Loads the trained MobileNetV2 model (big_five_mobilenetv2.keras, produced by
+# training.py), preprocesses a user image and returns the predicted species
+# with a confidence score.
+#
+# Usage from the command line:
+#     python predict.py path/to/image.jpg
+#     python predict.py path/to/image.jpg --model big_five_mobilenetv2.keras
+#
+# Usage from Python / Colab:
+#     from predict import AnimalClassifier
+#     clf = AnimalClassifier("big_five_mobilenetv2.keras")
+#     result = clf.predict("lion.jpg")
+#     print(result["label"], result["confidence"])
 
 from __future__ import annotations
 
