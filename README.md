@@ -59,13 +59,13 @@ The project aims to:
 
 ## 5. Target Classes
 
-| Class | Animal |
-|---|---|
-| 0 | Buffalo |
-| 1 | Elephant |
-| 2 | Leopard |
-| 3 | Lion |
-| 4 | Rhino |
+| Class | Animal   |
+| ----- | -------- |
+| 0     | Buffalo  |
+| 1     | Elephant |
+| 2     | Leopard  |
+| 3     | Lion     |
+| 4     | Rhino    |
 
 ---
 
@@ -118,3 +118,141 @@ Softmax
      |
      v
 Predicted Animal + Confidence
+```
+
+---
+
+## 8. Project Structure
+
+```text
+BigFiveApplication/                  (repository root)
+├── README.md
+├── requirements.txt
+└── BigFiveApplication/
+    ├── Animal/                      dataset: one folder per class, 15 images each
+    │   ├── Buffalo/  Elephant/  Leopard/  Lion/  Rhino/
+    ├── training.py                  Member 2: trains MobileNetV2, saves big_five_mobilenetv2.keras
+    ├── evaluation.py                Member 3: metrics, confusion matrix, error analysis
+    ├── predict.py                   Member 4: prediction module and command line tool
+    ├── app.py                       Member 4: Gradio web interface
+    ├── examples/                    one unseen test image per class, used in the demo
+    └── big_five_mobilenetv2.keras   trained model (created by training.py)
+```
+
+All scripts are run from inside the inner `BigFiveApplication/` folder, because they use the relative paths `Animal/` and `big_five_mobilenetv2.keras`.
+
+---
+
+## 9. Requirements
+
+- Python 3.10 or newer
+- The packages in `requirements.txt` (TensorFlow, NumPy, Pillow, scikit-learn, Matplotlib, Gradio)
+- About 2 GB of free disk space for TensorFlow
+- Internet access the first time `training.py` runs, to download the ImageNet weights for MobileNetV2
+- A GPU is not required. Training on this dataset takes about 2 to 3 minutes on a normal CPU, and less on Google Colab.
+
+---
+
+## 10. Installation
+
+### Option A: Google Colab
+
+```python
+!git clone https://github.com/LuckyMkhetyeva/BigFiveApplication.git
+%cd BigFiveApplication/BigFiveApplication
+!pip install -q gradio
+```
+
+TensorFlow, scikit-learn and Matplotlib are already installed on Colab.
+
+### Option B: Local machine
+
+```bash
+git clone https://github.com/LuckyMkhetyeva/BigFiveApplication.git
+cd BigFiveApplication
+python -m venv venv
+venv\Scripts\activate            # Windows
+source venv/bin/activate         # Mac/Linux
+pip install -r requirements.txt
+cd BigFiveApplication
+```
+
+---
+
+## 11. Dataset
+
+The dataset is included in the repository in `BigFiveApplication/Animal/`. It contains 75 images, 15 for each of the five classes. The folder names are the class labels and must stay exactly as they are: `Buffalo`, `Elephant`, `Leopard`, `Lion`, `Rhino`.
+
+`training.py` and `evaluation.py` split the images 70/15/15 into training (52), validation (11) and test (12) sets. The split is stratified and uses a fixed random seed (42), so both scripts always produce the same split.
+
+---
+
+## 12. How to Train
+
+```bash
+python training.py
+```
+
+The script trains the classifier in two stages (frozen MobileNetV2, then fine tuning of its last 30 layers), prints the test results and saves:
+
+- `big_five_mobilenetv2.keras`, the final model used by the application
+- `accuracy_curve.png`, `loss_curve.png` and `confusion_matrix.png`
+
+## 13. How to Evaluate
+
+```bash
+python evaluation.py
+```
+
+This loads `big_five_mobilenetv2.keras`, recreates the same test split and saves `evaluation_results.txt`, `evaluation_confusion_matrix.png` and `lowest_confidence_predictions.png`.
+
+---
+
+## 14. How to Run a Prediction
+
+`big_five_mobilenetv2.keras` must be in the same folder. If it is not there, run `training.py` first. Without it, the application stops with an error message explaining that the model file is missing.
+
+### Command line
+
+```bash
+python predict.py examples/lion.jfif --all   # also shows the score for every class
+python app.py --share                        # also creates a public link (use in Colab)
+```
+
+Example output:
+
+```text
+Animal: Lion
+Confidence: 97.9%
+```
+
+### Web interface (Gradio)
+
+```bash
+python app.py
+python app.py --share
+```
+
+Upload an image or click one of the examples. The application shows the predicted species, the confidence and a bar for every class.
+
+### From Python or a notebook
+
+```python
+from predict import AnimalClassifier, format_result
+
+clf = AnimalClassifier("big_five_mobilenetv2.keras")
+result = clf.predict("examples/leopard.jfif")
+print(format_result(result))
+print(result["scores"])
+```
+
+---
+
+## 15. Team Responsibilities
+
+| Member   | Responsibility                                                                      |
+| -------- | ----------------------------------------------------------------------------------- |
+| Member 1 | Dataset and data preparation                                                        |
+| Member 2 | MobileNetV2 model and training (`training.py`)                                      |
+| Member 3 | Evaluation and testing (`evaluation.py`)                                            |
+| Member 4 | Prediction application, integration and setup instructions (`predict.py`, `app.py`) |
