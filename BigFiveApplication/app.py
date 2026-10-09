@@ -1,11 +1,11 @@
-"""
-app.py - Big Five animal classifier: Gradio web interface 
-
-Run locally:     python app.py
-Run in Colab:    !python app.py --share     
-
-Upload an image -> preprocess -> MobileNetV2 -> species + confidence.
-"""
+# app.py - Big Five animal classifier: Gradio web interface
+#
+# Run locally:     python app.py
+# Run in Colab:    !python app.py --share    
+#
+# The trained model must be in the same folder.
+#
+# Upload an image -> preprocess -> MobileNetV2 -> species + confidence.
 
 import argparse
 from pathlib import Path
